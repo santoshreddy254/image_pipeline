@@ -105,7 +105,8 @@ class CalibrationNode(Node):
 
         self._boards = boards
         self._calib_flags = flags
-        self._fisheye_calib_flags = None
+        fisheye_flags = 0
+        self._fisheye_calib_flags = fisheye_flags
         self._checkerboard_flags = checkerboard_flags
         self._pattern = pattern
         self._camera_name = camera_name
