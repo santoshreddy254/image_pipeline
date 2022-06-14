@@ -206,12 +206,12 @@ def _get_circles(img, board, pattern):
     # Filter by Area.
     blobParams.filterByArea = True
     blobParams.minArea = 25     # minArea may be adjusted to suit for your experiment
-    blobParams.maxArea = 30e5   # maxArea may be adjusted to suit for your experiment
+    blobParams.maxArea = h*w   # maxArea may be adjusted to suit for your experiment
     # # Filter by Circularity
     # blobParams.filterByCircularity = True
     # blobParams.minCircularity = 0.5
     # # Filter by Convexity
-    # blobParams.filterByConvexity = True
+    # blobParams.filterByConvexity = False
     # blobParams.minConvexity = 0.87
     # # Filter by Inertia
     # blobParams.filterByInertia = True
