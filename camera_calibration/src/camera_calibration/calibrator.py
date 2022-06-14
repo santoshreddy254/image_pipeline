@@ -198,7 +198,28 @@ def _get_circles(img, board, pattern):
     if pattern == Patterns.ACircles:
         flag = cv2.CALIB_CB_ASYMMETRIC_GRID
     mono_arr = numpy.array(mono)
-    (ok, corners) = cv2.findCirclesGrid(mono_arr, (board.n_cols, board.n_rows), flags=flag)
+    
+    blobParams = cv2.SimpleBlobDetector_Params()
+    # Change thresholds
+    # blobParams.minThreshold = 8
+    # blobParams.maxThreshold = 255
+    # Filter by Area.
+    blobParams.filterByArea = True
+    blobParams.minArea = 25     # minArea may be adjusted to suit for your experiment
+    blobParams.maxArea = 30e5   # maxArea may be adjusted to suit for your experiment
+    # # Filter by Circularity
+    # blobParams.filterByCircularity = True
+    # blobParams.minCircularity = 0.5
+    # # Filter by Convexity
+    # blobParams.filterByConvexity = True
+    # blobParams.minConvexity = 0.87
+    # # Filter by Inertia
+    # blobParams.filterByInertia = True
+    # blobParams.minInertiaRatio = 0.01
+    print("minArea: {}, maxArea: {}".format(blobParams.minArea, blobParams.maxArea))
+    blobDetector = cv2.SimpleBlobDetector_create(blobParams)
+    (ok, corners) = cv2.findCirclesGrid(mono_arr, (board.n_cols, board.n_rows), flags=flag, blobDetector=blobDetector)
+    # (ok, corners) = cv2.findCirclesGrid(mono_arr, (board.n_cols, board.n_rows), flags=flag)
 
     # In symmetric case, findCirclesGrid does not detect the target if it's turned sideways. So we try
     # again with dimensions swapped - not so efficient.
@@ -357,6 +378,7 @@ class Calibrator():
                 (ok, corners) = _get_corners(img, b, refine, self.checkerboard_flags)
             else:
                 (ok, corners) = _get_circles(img, b, self.pattern)
+                # print("Circles: status {}, corners {}".format(ok, corners))
             if ok:
                 return (ok, corners, b)
         return (False, None, None)

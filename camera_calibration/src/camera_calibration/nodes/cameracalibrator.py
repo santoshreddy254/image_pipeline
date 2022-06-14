@@ -141,6 +141,7 @@ def main():
         checkerboard_flags = cv2.CALIB_CB_FAST_CHECK
 
     rclpy.init(args=args)
+    print("CUSTOM NODE FROM UBICA")
     node = OpenCVCalibrationNode("cameracalibrator", boards, options.service_check, sync, calib_flags, pattern, options.camera_name,
                                  checkerboard_flags=checkerboard_flags)
     node.spin()
